@@ -12,8 +12,8 @@ from ingestion.schema import RaceResult
 def load_results_to_bigquery(results: list[RaceResult]) -> str:
     """Create the destination dataset/table if needed and append validated rows.
 
-    BigQuery insert IDs provide best-effort duplicate suppression for retries;
-    they are not a substitute for a future MERGE-based idempotent upsert.
+    BigQuery insert IDs provide only short-window, best-effort duplicate suppression;
+    a MERGE-based upsert is still needed for durable idempotency.
     """
     project_id = os.getenv("GCP_PROJECT_ID")
     dataset_name = os.getenv("BQ_DATASET", "marathon")
@@ -62,7 +62,7 @@ def load_results_to_bigquery(results: list[RaceResult]) -> str:
         }
         for result in results
     ]
-    row_ids = [f"{row['race_id']}:{row['bib']}:{ingested_at}" for row in rows]
+    row_ids = [f"{row['race_id']}:{row['bib']}" for row in rows]
     errors = client.insert_rows_json(table_id, rows, row_ids=row_ids)
     if errors:
         raise RuntimeError(f"BigQuery rejected one or more rows: {errors}")
