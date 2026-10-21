@@ -1,16 +1,14 @@
-# dbt + DuckDB
+# dbt + BigQuery
 
-Install the root requirements, then create `~/.dbt/profiles.yml`:
+The project uses the dbt-bigquery adapter. Copy profiles.yml.example to profiles.yml in this directory (the local file is ignored by Git), then set GCP_PROJECT_ID, BQ_DATASET, and BQ_LOCATION in your environment.
 
-```yaml
-dbt_marathon:
-  target: dev
-  outputs:
-    dev:
-      type: duckdb
-      path: /absolute/path/to/score-marathon-de/data/marathon.duckdb
-      schema: main
-      threads: 4
-```
+For local development, authenticate using Application Default Credentials:
 
-Update the path for your machine. Configure dbt sources after the ingestion table schema is finalized.
+~~~bash
+gcloud auth application-default login
+pip install -r requirements.txt
+dbt debug --project-dir dbt_marathon --profiles-dir dbt_marathon
+dbt build --project-dir dbt_marathon --profiles-dir dbt_marathon
+~~~
+
+The source declaration expects the ingestion-created raw_results table in the configured dataset. Confirm that the timing provider's fields map to RaceResult before running against live data. No credentials or service-account keys belong in this repository.
