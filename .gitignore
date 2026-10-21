@@ -19,6 +19,9 @@ data/*
 .streamlit/secrets.toml
 .dagster/
 storage/
+dbt_marathon/profiles.yml
+dbt_marathon/target/
+dbt_marathon/dbt_packages/
 .vscode/
 .idea/
 .DS_Store
