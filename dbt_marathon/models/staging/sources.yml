@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: marathon
+    description: Validated race results loaded by the Python ingestion job.
+    database: "{{ env_var('GCP_PROJECT_ID') }}"
+    schema: "{{ env_var('BQ_DATASET', 'marathon') }}"
+    tables:
+      - name: raw_results
+        description: Append-oriented landing table from the timing provider.
+        columns:
+          - name: race_id
+            tests: [not_null]
+          - name: bib
+            tests: [not_null]
+          - name: status
+            tests: [not_null]
