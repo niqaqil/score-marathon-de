@@ -2,17 +2,25 @@
 
 An end-to-end data engineering project for SCORE Marathon 2026 race results, inspired by the Boom+ Run dashboard. The project is being developed around Python/pandas ingestion and data-quality investigation, with Google Cloud, BigQuery, dbt, Dagster, and Streamlit/Plotly as the intended analytics stack.
 
-> **Current status (21 October 2026):** Marathon results have been extracted and investigated locally. The multi-category extractor is prepared for Marathon, Half Marathon, and 10K, but the Half Marathon and 10K live extraction still needs a small test run. Cloud ingestion and deployment are not yet confirmed as operational.
+> **Current status (21 October 2026):** Marathon results have been extracted. Data-quality investigation is **in progress**: initial audits and review flags exist, but flagged records and unresolved issues still need to be reviewed. The multi-category extractor is prepared for Marathon, Half Marathon, and 10K, but the Half Marathon and 10K live extraction still needs a small test run. Cloud ingestion and deployment are not yet confirmed as operational.
 
 ## Current progress
 
 ### Completed locally
 
 - Extracted **5,802 Marathon result records** and **72,051 checkpoint split records**.
-- Checked the Marathon extraction for duplicate bibs and checkpoint consistency.
-- Investigated missing finish times and differences between source status and checkpoint completeness.
-- Created data-quality review outputs, including checkpoint and finish-checkpoint audits and flagged records.
-- Confirmed the HeyJom category query parameters for the three distances:
+- Completed initial duplicate-bib and checkpoint-consistency checks for the Marathon extraction.
+- Generated initial data-quality review outputs, including checkpoint and finish-checkpoint audits and flagged records.
+
+### In progress
+
+- Reviewing flagged Marathon records and unresolved data-quality issues.
+- Investigating missing finish times and differences between source status and checkpoint completeness.
+- Confirming which anomalies reflect source data versus issues that need further investigation. Source values are preserved; flags are not automatic corrections.
+
+### Prepared for next validation
+
+- Confirmed the HeyJom category query parameters:
   - Marathon: `MARATHON`
   - Half Marathon: `HALF MARATHON`
   - 10K: `10K`
@@ -20,12 +28,13 @@ An end-to-end data engineering project for SCORE Marathon 2026 race results, ins
 
 ### Next steps
 
-1. Run the multi-category extractor with the small test limit.
-2. Verify that each category returns the expected runners and that the split endpoint returns valid checkpoint tables.
-3. Review the test CSVs, then set `MAX_RUNNERS = None` for full extraction.
-4. Run quality checks independently for Marathon, Half Marathon, and 10K.
-5. Keep raw participant data and generated race CSVs out of Git unless there is a clear, appropriate reason and permission to publish them.
-6. After extraction is stable, plan ingestion into BigQuery and build dbt models and dashboard analytics.
+1. Continue reviewing the Marathon issue log and document each issue as reviewed, unresolved, or requiring source confirmation.
+2. Run the multi-category extractor with the small test limit.
+3. Verify that each category returns the expected runners and that the split endpoint returns valid checkpoint tables.
+4. Review the test CSVs, then set `MAX_RUNNERS = None` for full extraction.
+5. Run quality checks independently for Marathon, Half Marathon, and 10K.
+6. Keep raw participant data and generated race CSVs out of Git unless there is a clear, appropriate reason and permission to publish them.
+7. After extraction and validation are stable, plan ingestion into BigQuery and build dbt models and dashboard analytics.
 
 See [the project progress log](docs/progress-log.md) for the current checkpoint and validation notes.
 
