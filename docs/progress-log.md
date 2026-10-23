@@ -33,7 +33,7 @@ The updated Python/pandas cleaning script ran successfully for all four race cat
 - Uploaded the cleaned category folders to the existing private GCS bucket.
 - Bucket location confirmed as `ASIA-SOUTHEAST1` (Singapore).
 - BigQuery dataset `score_marathon` is configured in `asia-southeast1`.
-- Created all seven BigQuery tables:
+- User confirmed that all seven BigQuery tables have been created:
   - `marathon_results`
   - `marathon_splits`
   - `half_marathon_results`
