@@ -2,7 +2,7 @@
 
 **Last updated:** 23 October 2026  
 **Project:** `score-marathon-de`  
-**Current phase:** Cloud data loading and data-quality review
+**Current phase:** BigQuery validation and secure dashboard integration planning
 
 ## 1. Completed — local cleaning
 
@@ -32,22 +32,38 @@ The updated Python/pandas cleaning script ran successfully for all four race cat
 
 - Uploaded the cleaned category folders to the existing private GCS bucket.
 - Bucket location confirmed as `ASIA-SOUTHEAST1` (Singapore).
-- BigQuery dataset: `score_marathon`, configured in `asia-southeast1`.
-- Loaded BigQuery table: `score_marathon.marathon_results` (expected count: 5,802).
+- BigQuery dataset `score_marathon` is configured in `asia-southeast1`.
+- Created all seven BigQuery tables:
+  - `marathon_results`
+  - `marathon_splits`
+  - `half_marathon_results`
+  - `half_marathon_splits`
+  - `10k_results`
+  - `10k_splits`
+  - `5k_results`
 
-## 3. In progress — BigQuery loading and validation
+**Validation is not yet confirmed:** table creation does not prove that the loaded row counts match the local outputs. Run the row-count query and inspect table schemas before marking ingestion complete.
 
-- [ ] Load `marathon_splits` — expected 72,051 rows.
-- [ ] Load `half_marathon_results` — expected 21,679 rows.
-- [ ] Load `half_marathon_splits` — expected 183,593 rows.
-- [ ] Load `10k_results` — expected 13,947 rows.
-- [ ] Load `10k_splits` — expected 63,203 rows.
-- [ ] Load `5k_results` — expected 9,817 rows.
+## 3. In progress — BigQuery validation
+
+Expected counts based on local cleaned outputs:
+
+| Table | Expected rows |
+| --- | ---: |
+| `marathon_results` | 5,802 |
+| `marathon_splits` | 72,051 |
+| `half_marathon_results` | 21,679 |
+| `half_marathon_splits` | 183,593 |
+| `10k_results` | 13,947 |
+| `10k_splits` | 63,203 |
+| `5k_results` | 9,817 |
+| **Total** | **376,092** |
+
+- [x] Create all seven tables.
 - [ ] Run a row-count query across all seven BigQuery tables.
+- [ ] Compare actual counts with the expected counts above.
 - [ ] Inspect inferred column types, especially bib identifiers, timing fields, and checkpoint fields.
 - [ ] Confirm blank/missing source values are represented appropriately.
-
-The expected total across the seven tables is **376,092 rows**. Confirm the actual BigQuery counts before marking the load complete.
 
 ## 4. Data-quality issues still under review
 
@@ -60,7 +76,7 @@ The expected total across the seven tables is **376,092 rows**. Confirm the actu
 
 ## 5. Next implementation steps
 
-1. Finish loading and validating all seven BigQuery tables.
+1. Validate row counts and schemas for the seven BigQuery tables.
 2. Build a small secure API (recommended: Cloud Run) to query BigQuery for dashboard requests.
 3. Use a dedicated service account with least-privilege permissions; keep credentials out of the browser and Git.
 4. Connect the Lovable frontend to the API. Lovable currently has no backend connected.
