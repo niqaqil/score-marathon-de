@@ -2,7 +2,7 @@
 
 An end-to-end data engineering project for SCORE Marathon 2026 race results, inspired by the Boom+ Run dashboard. The project uses Python/pandas for cleaning and quality checks, Google Cloud Storage for file storage, and BigQuery for analytics. A secure API and Lovable dashboard integration are planned next.
 
-> **Current status (23 October 2026):** Local cleaning completed for four race categories. Seven cleaned CSV outputs were generated with **376,092 rows preserved** and no rows dropped. The cleaned category folders were uploaded to a private Google Cloud Storage bucket in `asia-southeast1` (Singapore). The BigQuery dataset `score_marathon` was configured for that region, and the `marathon_results` table has been loaded. The remaining six tables still need to be loaded and row-count/schema checks completed. Data-quality issues remain under review; successful cleaning and row preservation do not mean all source-data issues are resolved. Lovable has no backend connected yet.
+> **Current status (23 October 2026):** Local cleaning completed for four race categories. Seven cleaned CSV outputs were generated with **376,092 rows preserved** and no rows dropped. The cleaned category folders were uploaded to a private Google Cloud Storage bucket in `asia-southeast1` (Singapore). The BigQuery dataset `score_marathon` is configured for that region, and **all seven BigQuery tables have now been created**. Row-count and schema validation are still pending; table creation alone does not confirm that every table loaded the expected data. Data-quality issues remain under review. Lovable has no backend connected yet.
 
 ## Current progress
 
@@ -18,8 +18,15 @@ An end-to-end data engineering project for SCORE Marathon 2026 race results, ins
 
 - Uploaded the cleaned category folders to the existing private GCS bucket in `asia-southeast1`.
 - Created/configured BigQuery dataset `score_marathon` in `asia-southeast1`.
-- Loaded `marathon_results` into BigQuery (expected row count: 5,802).
-- **Pending:** load the remaining six tables, validate all row counts and inferred column types, and verify missing-value representation.
+- Created all seven BigQuery tables:
+  - `marathon_results`
+  - `marathon_splits`
+  - `half_marathon_results`
+  - `half_marathon_splits`
+  - `10k_results`
+  - `10k_splits`
+  - `5k_results`
+- **Pending:** verify actual row counts against the expected counts, inspect column types, and confirm missing-value representation.
 - **Pending:** build a secure backend/API for Lovable. Do not expose service-account credentials in frontend code or make the bucket/tables public.
 
 ### Data-quality investigation still in progress
@@ -46,8 +53,8 @@ These are the local cleaned-output row counts and the baseline for BigQuery vali
 
 ## Next steps
 
-1. Load the six remaining CSVs into BigQuery dataset `score_marathon`.
-2. Compare BigQuery row counts to the inventory above and review inferred schema types.
+1. Run a BigQuery row-count query across all seven tables and compare with the inventory above.
+2. Review inferred schema types and verify that bib identifiers, timing fields, and checkpoint fields are represented appropriately.
 3. Investigate flagged source-data issues and record their dispositions without overwriting original data.
 4. Create a secure Cloud Run API with least-privilege access to BigQuery.
 5. Connect the Lovable frontend to the API and test leaderboard, participant lookup, and split endpoints.
