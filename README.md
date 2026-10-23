@@ -2,7 +2,7 @@
 
 An end-to-end data engineering project for SCORE Marathon 2026 race results, inspired by the Boom+ Run dashboard. The project uses Python/pandas for cleaning and quality checks, Google Cloud Storage for file storage, and BigQuery for analytics. A secure API and Lovable dashboard integration are planned next.
 
-> **Current status (23 October 2026):** Local cleaning completed for four race categories. Seven cleaned CSV outputs were generated with **376,092 rows preserved** and no rows dropped. The cleaned category folders were uploaded to a private Google Cloud Storage bucket in `asia-southeast1` (Singapore). The BigQuery dataset `score_marathon` is configured for that region, and **all seven BigQuery tables have now been created**. Row-count and schema validation are still pending; table creation alone does not confirm that every table loaded the expected data. Data-quality issues remain under review. Lovable has no backend connected yet.
+> **Current status (23 October 2026):** Local cleaning completed for four race categories. Seven cleaned CSV outputs were generated with **376,092 rows preserved** and no rows dropped. The cleaned category folders were uploaded to a private Google Cloud Storage bucket in `asia-southeast1` (Singapore). The BigQuery dataset `score_marathon` is configured in that region, and the user has confirmed that **all seven BigQuery tables have been created**. Row-count and schema validation are the next step; table creation alone does not confirm that every table contains the expected data. Data-quality issues remain under review. Lovable has no backend connected yet.
 
 ## Current progress
 
@@ -26,7 +26,7 @@ An end-to-end data engineering project for SCORE Marathon 2026 race results, ins
   - `10k_results`
   - `10k_splits`
   - `5k_results`
-- **Pending:** verify actual row counts against the expected counts, inspect column types, and confirm missing-value representation.
+- **Next:** verify actual row counts against expected counts, inspect column types, and confirm missing-value representation.
 - **Pending:** build a secure backend/API for Lovable. Do not expose service-account credentials in frontend code or make the bucket/tables public.
 
 ### Data-quality investigation still in progress
